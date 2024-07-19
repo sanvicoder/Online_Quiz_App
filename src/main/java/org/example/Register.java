@@ -1,4 +1,4 @@
-package org.projectgurukul;
+package org.example;
 
 import javax.swing.JFrame;
 import java.awt.GridLayout;
@@ -39,6 +39,7 @@ public class Register {
 		frame.getContentPane().add(lblId);
 		
 		userIdField = new JTextField();
+		//userIdField.setBounds(50, 79, 173, 36);
 		frame.getContentPane().add(userIdField);
 		userIdField.setColumns(10);
 		
@@ -75,7 +76,7 @@ public class Register {
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					DataBase.addUser(Integer.valueOf(userIdField.getText()), nameField.getText(), emailField.getText(), new String(passwordField.getPassword()));
+					DataBase.addUser(Integer.parseInt(userIdField.getText()), nameField.getText(), emailField.getText(), new String(passwordField.getPassword()));
 					JOptionPane.showMessageDialog(btnRegister, "User Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (SQLException e1) {

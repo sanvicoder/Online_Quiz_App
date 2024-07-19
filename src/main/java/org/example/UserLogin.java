@@ -1,4 +1,4 @@
-package org.projectgurukul;
+package org.example;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,7 +31,7 @@ public class UserLogin {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblId = new JLabel("ID:");
-		lblId.setBounds(0, 12, 173, 36);
+		lblId.setBounds(50, 12, 173, 36);
 		frame.getContentPane().add(lblId);
 		
 		idField = new JTextField();
@@ -40,7 +40,7 @@ public class UserLogin {
 		idField.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(0, 79, 173, 36);
+		lblPassword.setBounds(50, 79, 173, 36);
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
@@ -57,7 +57,8 @@ public class UserLogin {
 				try {
 					if (DataBase.validatePassword(idField.getText(),new String(passwordField.getPassword()))) {
 						frame.dispose();
-						Quiz quiz = new Quiz();
+						//
+						Instructions instructions = new Instructions();
 					} else {
 						JOptionPane.showMessageDialog(btnLogin, "ID or Password does not match","Invalid ID/Password",JOptionPane.ERROR_MESSAGE);
 					}

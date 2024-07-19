@@ -1,4 +1,4 @@
-package org.projectgurukul;
+package org.example;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -44,7 +44,7 @@ public class ProfileChooser {
 	private void initialize() {
 		frmQuizApplication = new JFrame();
 		frmQuizApplication.getContentPane().setBackground(new Color(246, 245, 244));
-		frmQuizApplication.setTitle("Quiz Application By ProjectGurukul");
+		frmQuizApplication.setTitle("Quiz Application");
 		frmQuizApplication.setBounds(100, 100, 440, 202);
 		frmQuizApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmQuizApplication.getContentPane().setLayout(null);

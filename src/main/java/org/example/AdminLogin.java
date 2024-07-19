@@ -1,4 +1,4 @@
-package org.projectgurukul;
+package org.example;
 
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
@@ -64,6 +64,19 @@ public class AdminLogin  {
 			}
 		});
 		frame.getContentPane().add(btnLogin);
+
+		JButton btnSwitch = new JButton("Switch Profile");
+		btnSwitch.setBounds(161, 230, 117, 25);
+		btnSwitch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				UserLogin adminLogin= new UserLogin();
+			}
+
+		});
+		frame.getContentPane().add(btnSwitch);
 		frame.setVisible(true);
 	}
 }

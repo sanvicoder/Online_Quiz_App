@@ -1,4 +1,4 @@
-package org.projectgurukul;
+package org.example;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +25,7 @@ public class Quiz extends JFrame{
 	ArrayList<Question> questions = null;
 	private int count = 0;
 	private int score = 0;
-	public Quiz() {
+	public Quiz(String topic) {
 		setTitle("Welcom to Quiz");
 		setSize(600, 500);
 		setVisible(true);
@@ -83,7 +83,7 @@ public class Quiz extends JFrame{
 		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 		buttonsPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		try {
-			questions =DataBase.getQuestionAns();
+			questions =DataBase.getQuestionAnsByTopic(topic);
 			queTextArea.setText(questions.get(count).getQuestion());
 			rdbtnOp1.setText(questions.get(count).getOp1());
 			rdbtnOp2.setText(questions.get(count).getOp2());
@@ -92,7 +92,6 @@ public class Quiz extends JFrame{
 			
 			
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -128,8 +127,12 @@ public class Quiz extends JFrame{
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected() && button.getText().equals(questions.get(count).getAns())) {
+				JOptionPane.showMessageDialog(this,"Correct Answer" );
             	score++;
-            }
+            }else if(button.isSelected()){
+				JOptionPane.showMessageDialog(this,"Incorrect Answer" );
+				break;
+			}
         }
 	}
 	
@@ -137,7 +140,7 @@ public class Quiz extends JFrame{
 	private void displayScore() {
 		
 		dispose();
-		JOptionPane.showMessageDialog(this, "Thanks for playing the Quiz by ProjectGurukul\n Your Score was: "+score,"Quiz by ProjectGurukul",JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Thanks for playing the Quiz\n Your Score was: "+score,"Quiz by Sanvi Agarwal",JOptionPane.PLAIN_MESSAGE);
 	}
 	
 //	Method to add and start the timer for the entire quiz
