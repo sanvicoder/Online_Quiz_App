@@ -3,12 +3,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.sql.Date;
+import java.util.List;
 
 import org.sqlite.SQLiteDataSource;
 
@@ -50,8 +49,15 @@ public class DataBase {
              		+ "  Option4 TEXT,\n"
              		+ "  Answer TEXT,\n"
 					+ "  Topic TEXT);");
-             
-             
+
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS quiz_attempts (\n"
+					+ "  AttemptID INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+					+ "  userID INTEGER,\n"
+					+ "  Topic TEXT,\n"
+					+ "  Score INTEGER,\n"
+					+ "  AttemptDate DATE,\n"
+					+ "  FOREIGN KEY (userID) REFERENCES users(userID)\n"
+					+ ");");
              
 //           Closing statement and connection  
              statement.close();
@@ -83,7 +89,12 @@ public class DataBase {
 													+ "VALUES(?,?,?,?)");
 
 		// Hash the password with the salt
-		String hashedPassword = hashPassword(password);
+		String hashedPassword = null;
+		try {
+			hashedPassword = hashPassword(password);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 
 		ps.setInt(1, userID);
 		ps.setString(2, username);
@@ -96,29 +107,41 @@ public class DataBase {
 		conn.close();
 	}
 
-	public static String hashPassword(String password) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
-		}
-		byte[] passwordBytes = password.getBytes();
+	public static String hashPassword(String password) throws NoSuchAlgorithmException {
+		SecureRandom random = new SecureRandom();
+		byte[] saltBytes = new byte[16];
+		random.nextBytes(saltBytes);
+
+		String salt = Base64.getEncoder().encodeToString(saltBytes);
+
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] passwordBytes = (password + salt).getBytes();
 		byte[] hashBytes = md.digest(passwordBytes);
 
-		StringBuilder hexString = new StringBuilder();
-		for (byte b : hashBytes) {
-			String hex = Integer.toHexString(0xFF & b);
-			if (hex.length() == 1) {
-				hexString.append('0');
-			}
-			hexString.append(hex);
-		}
+		String hashedPassword = Base64.getEncoder().encodeToString(hashBytes);
 
-		return hexString.toString();
+		return salt + ":" + hashedPassword;
 	}
 
-//Method to validata the user id and password
+	public static boolean verifyPassword(String password, String storedHash) throws NoSuchAlgorithmException {
+		String[] parts = storedHash.split(":");
+		String salt = parts[0];
+		String storedHashValue = parts[1];
+
+		String hashedPassword = hashPasswordWithSalt(password, salt);
+
+		return hashedPassword.equals(storedHashValue);
+	}
+
+	private static String hashPasswordWithSalt(String password, String salt) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] passwordBytes = (password + salt).getBytes();
+		byte[] hashBytes = md.digest(passwordBytes);
+
+		return Base64.getEncoder().encodeToString(hashBytes);
+	}
+
+	//Method to validata the user id and password
 	public static boolean validatePassword(String id, String password) throws SQLException {
 		conn = ds.getConnection();
 		String sql = "SELECT userID,password FROM users WHERE userID = ?;";
@@ -128,15 +151,16 @@ public class DataBase {
 
 		if (rs.next()) {
 			String storedPassword = rs.getString("password");
-			byte[] storedSalt = rs.getBytes("salt");
 
-			String hashedPassword = hashPassword(password, storedSalt);
-
-			if (hashedPassword.equals(storedPassword)) {
-				rs.close();
-				ps.close();
-				conn.close();
-				return true;
+			try {
+				if (verifyPassword(password, storedPassword)) {
+					rs.close();
+					ps.close();
+					conn.close();
+					return true;
+				}
+			} catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		
@@ -268,6 +292,63 @@ public class DataBase {
 			questions.add(q);
 		}
 		return questions;
+	}
+
+	public static void saveAttemptToDatabase(int userId, String topic, int score) {
+		try {
+			conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO quiz_attempts (userID, Topic, Score, AttemptDate) VALUES (?, ?, ?, ?)");
+			pstmt.setInt(1, userId);
+			pstmt.setString(2, topic);
+			pstmt.setInt(3, score);
+			pstmt.setDate(4, new Date(System.currentTimeMillis()));
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.err.println("Error saving attempt: " + e.getMessage());
+		}
+	}
+
+//	public static List<UserPanel.LeaderboardEntry> getLeaderboardTableModel(){
+//		List<UserPanel.LeaderboardEntry> leaderboard = new ArrayList<>();
+//		try {
+//			conn = ds.getConnection();
+//			PreparedStatement pstmt = conn.prepareStatement("SELECT u.username, SUM(qa.score) AS total_score\n" +
+//					"FROM users u\n" +
+//					"JOIN quiz_attempts qa ON u.userID = qa.userID\n" +
+//					"GROUP BY u.username\n" +
+//					"ORDER BY total_score DESC;");
+//			ResultSet rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				UserPanel.LeaderboardEntry entry = new UserPanel.LeaderboardEntry(rs.getString("username"), rs.getInt("total_score"));
+//				leaderboard.add(entry);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return leaderboard;
+//	}
+//
+	public static List<UserPanel.QuizAttempt> getAttemptsTableModel(int userId) {
+		List<UserPanel.QuizAttempt> attempts = new ArrayList<>();
+		try {
+			conn = ds.getConnection();
+			String query = "SELECT * FROM quiz_attempts WHERE userID = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				UserPanel.QuizAttempt attempt = new UserPanel.QuizAttempt();
+				attempt.setAttemptID(rs.getInt("AttemptID"));
+				attempt.setTopic(rs.getString("Topic"));
+				attempt.setScore(rs.getInt("Score"));
+				attempt.setAttemptDate(rs.getDate("AttemptDate"));
+				attempts.add(attempt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return attempts;
 	}
 }
 

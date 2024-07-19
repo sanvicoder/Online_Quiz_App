@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class QuizInstructionsPanel extends JPanel {
-    public QuizInstructionsPanel() {
+    public QuizInstructionsPanel(int userId) {
         setLayout(new BorderLayout());
 
         // Add instructions label
@@ -36,16 +36,16 @@ public class QuizInstructionsPanel extends JPanel {
             topicButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // Start the quiz with the selected topic
-                    startQuiz(topic);
+                    startQuiz(topic, userId);
                 }
             });
             topicSelectionPanel.add(topicButton);
         }
     }
 
-    private void startQuiz(String topic) {
+    private void startQuiz(String topic, int userId) {
         // Create a new Quiz instance with the selected topic
-        Quiz quiz = new Quiz(topic);
+        Quiz quiz = new Quiz(topic, userId);
         quiz.setVisible(true);
     }
 }

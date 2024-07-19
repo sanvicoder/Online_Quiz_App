@@ -25,7 +25,11 @@ public class Quiz extends JFrame{
 	ArrayList<Question> questions = null;
 	private int count = 0;
 	private int score = 0;
-	public Quiz(String topic) {
+	private int userId;
+	private String topic;
+	public Quiz(String topic, int userId) {
+		this.userId = userId;
+		this.topic = topic;
 		setTitle("Welcom to Quiz");
 		setSize(600, 500);
 		setVisible(true);
@@ -141,6 +145,7 @@ public class Quiz extends JFrame{
 		
 		dispose();
 		JOptionPane.showMessageDialog(this, "Thanks for playing the Quiz\n Your Score was: "+score,"Quiz by Sanvi Agarwal",JOptionPane.PLAIN_MESSAGE);
+		DataBase.saveAttemptToDatabase(userId, topic, score);
 	}
 	
 //	Method to add and start the timer for the entire quiz

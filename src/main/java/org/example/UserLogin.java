@@ -57,8 +57,8 @@ public class UserLogin {
 				try {
 					if (DataBase.validatePassword(idField.getText(),new String(passwordField.getPassword()))) {
 						frame.dispose();
-						//
-						Instructions instructions = new Instructions();
+						UserPanel userPanel = new UserPanel(Integer.parseInt(idField.getText()));
+						userPanel.setVisible(true);
 					} else {
 						JOptionPane.showMessageDialog(btnLogin, "ID or Password does not match","Invalid ID/Password",JOptionPane.ERROR_MESSAGE);
 					}
