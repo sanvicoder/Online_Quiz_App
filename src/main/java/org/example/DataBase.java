@@ -58,6 +58,25 @@ public class DataBase {
 					+ "  AttemptDate DATE,\n"
 					+ "  FOREIGN KEY (userID) REFERENCES users(userID)\n"
 					+ ");");
+
+//			statement.executeUpdate("INSERT INTO users (userID, username, email, password) VALUES "
+//					+ "(1, 'johnDoe', 'johndoe@example.com', 'DLX3xW+1kWXHNXpnUr3bOw==:in+RvcOissGINZ2xIwCPnfPAXKEUb6fj9EUT7MSRB/k=')");
+//			statement.executeUpdate("INSERT INTO users (userID, username, email, password) VALUES "
+//					+ "(2, 'janeDoe', 'janedoe@example.com', 'password456')");
+//
+//			statement.executeUpdate("INSERT INTO question (QuestionID, Question, Option1, Option2, Option3, Option4, Answer, Topic) VALUES "
+//					+ "(1, 'What is the capital of France?', 'Paris', 'London', 'Berlin', 'Rome', 'Paris', 'History')");
+//			statement.executeUpdate("INSERT INTO question (QuestionID, Question, Option1, Option2, Option3, Option4, Answer, Topic) VALUES "
+//					+ "(2, 'What is the largest planet in our solar system?', 'Earth', 'Saturn', 'Jupiter', 'Uranus', 'Jupiter', 'Science')");
+//			statement.executeUpdate("INSERT INTO question (QuestionID, Question, Option1, Option2, Option3, Option4, Answer, Topic) VALUES "
+//					+ "(3, 'Who was the first president of the United States?', 'George Washington', 'Abraham Lincoln', 'Thomas Jefferson', 'Theodore Roosevelt', 'George Washington', 'History')");
+//
+//			statement.executeUpdate("INSERT INTO quiz_attempts (AttemptID, userID, Topic, Score, AttemptDate) VALUES "
+//					+ "(1, 1, 'History', 80, '1721498425')");
+//			statement.executeUpdate("INSERT INTO quiz_attempts (AttemptID, userID, Topic, Score, AttemptDate) VALUES "
+//					+ "(2, 1, 'Science', 90, '1721498425')");
+//			statement.executeUpdate("INSERT INTO quiz_attempts (AttemptID, userID, Topic, Score, AttemptDate) VALUES "
+//					+ "(3, 2, 'History', 70, '1721498425')");
              
 //           Closing statement and connection  
              statement.close();
