@@ -5,4 +5,5 @@
 ## Java, JDBC, Swing, SQLite
 
 ***To setup databse, run sqlite3 QuizDB.db command***<br />
-***For Admin login, Username: Admin and Password: 1234***
+***For Admin login, Username: Admin and Password: 1234***<br />
+***For User Login, UserID: 1 and Password: 7890***
