@@ -32,7 +32,7 @@ public class UserPanel extends JFrame {
         // Create header panel
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout());
-        lblUsername = new JLabel("UserID: ");
+        lblUsername = new JLabel("UserID: " + userID);
         headerPanel.add(lblUsername);
         add(headerPanel, BorderLayout.NORTH);
 
@@ -51,6 +51,18 @@ public class UserPanel extends JFrame {
         btnViewAttempts.addActionListener(new ViewAttemptsListener());
         buttonPanel.add(btnViewAttempts);
         add(buttonPanel, BorderLayout.WEST);
+
+        // Create logout panel
+        JPanel logoutPanel = new JPanel();
+        JButton btnLogout = new JButton("Logout");
+        btnLogout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserLogin userLogin = new UserLogin();
+            }
+        });
+        logoutPanel.add(btnLogout);
+        add(logoutPanel, BorderLayout.SOUTH);
 
         // Create button panel
         JPanel instructionButtonPanel = new JPanel();

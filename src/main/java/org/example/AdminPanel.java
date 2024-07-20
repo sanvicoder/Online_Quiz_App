@@ -9,8 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.Objects;
 
 public class AdminPanel extends JFrame {
@@ -57,9 +57,82 @@ public class AdminPanel extends JFrame {
 			}
 		});
 		buttonsPanel.add(btnLogout);
+
+		JButton btnLeaderboard = new JButton("Leaderboard");
+		btnLeaderboard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showLeaderBoard();
+			}
+		});
+		buttonsPanel.add(btnLeaderboard);
 		setVisible(true);
-		
-		
+	}
+
+	private static void showLeaderBoard() {
+
+		DefaultTableModel tableModel = new DefaultTableModel(
+				new Object[][]{},
+				new Object[]{"Username", "Total Score", "Num Attempts", "Average Score"}
+		);
+		JTable leaderboardTable = new JTable(tableModel);
+
+		// retrieve leaderboard data from database
+		List<LeaderboardEntry> leaderboardEntries = DataBase.getOverallLeaderboard();
+
+		// populate the table model
+		for (LeaderboardEntry entry : leaderboardEntries) {
+			tableModel.addRow(new Object[]{
+					entry.getUsername(),
+					entry.getTotalScore(),
+					entry.getNumAttempts(),
+					entry.getAverageScore()
+			});
+		}
+
+		// add the table to a scroll pane and display it
+		JScrollPane scrollPane = new JScrollPane(leaderboardTable);
+		JFrame leaderboardFrame = new JFrame("Leaderboard");
+		leaderboardFrame.getContentPane().add(scrollPane);
+		leaderboardFrame.pack();
+		leaderboardFrame.setVisible(true);
+
+		JPanel inputPanel = new JPanel();
+		inputPanel.setLayout(new GridLayout(0, 2, 0, 10));
+		leaderboardFrame.getContentPane().add(inputPanel, BorderLayout.SOUTH);
+
+		JLabel lblTopic = new JLabel("Topic:");
+		inputPanel.add(lblTopic);
+
+		JComboBox<String> topicComboBox = new JComboBox<>();
+		topicComboBox.addItem("Select Topic");
+		topicComboBox.addItem("History");
+		topicComboBox.addItem("Science");
+		topicComboBox.addItem("Technology");
+		topicComboBox.addItem("Sports");
+		inputPanel.add(topicComboBox);
+
+		topicComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (topicComboBox.getSelectedItem() != "Select Topic") {
+					String selectedTopic = topicComboBox.getSelectedItem().toString();
+					List<LeaderboardEntry> topicLeaderboardEntries = DataBase.getTopicLeaderboard(selectedTopic);
+
+					// clear the table model
+					tableModel.setRowCount(0);
+
+					// populate the table model with topic leaderboard data
+					for (LeaderboardEntry entry : topicLeaderboardEntries) {
+						tableModel.addRow(new Object[]{
+								entry.getUsername(),
+								entry.getTotalScore(),
+								entry.getNumAttempts(),
+								entry.getAverageScore()
+						});
+					}
+				}
+			}
+		});
 	}
 
 	private void addQuestions() {

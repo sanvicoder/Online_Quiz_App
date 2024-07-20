@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.JFrame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -31,8 +32,9 @@ public class AdminLogin  {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblAdmin = new JLabel("Admin Name");
-		lblAdmin.setBounds(0, 67, 173, 36);
+		JLabel lblAdmin = new JLabel("Admin Name:");
+		lblAdmin.setBounds(30, 67, 173, 36);
+		lblAdmin.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblAdmin);
 		
 		adminNameField = new JTextField();
@@ -40,8 +42,9 @@ public class AdminLogin  {
 		frame.getContentPane().add(adminNameField);
 		adminNameField.setColumns(10);
 		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(0, 134, 173, 36);
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(30, 134, 173, 36);
+		lblPassword.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();

@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb768df8-9b83-4320-86e3-5c71a0fb8bf8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/UserPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/LeaderboardEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QuizDB.db" beforeDir="false" afterPath="$PROJECT_DIR$/QuizDB.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/AdminLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/AdminLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/AdminPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/AdminPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Instructions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ProfileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ProfileChooser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Quiz.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Quiz.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/QuizInstructionsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/QuizInstructionsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Register.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +96,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/UserPanel.java</url>
-          <line>72</line>
+          <line>84</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>

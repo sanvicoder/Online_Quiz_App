@@ -30,7 +30,7 @@ public class Quiz extends JFrame{
 	public Quiz(String topic, int userId) {
 		this.userId = userId;
 		this.topic = topic;
-		setTitle("Welcom to Quiz");
+		setTitle("Welcome to Quiz");
 		setSize(600, 500);
 		setVisible(true);
 		
@@ -88,7 +88,7 @@ public class Quiz extends JFrame{
 		buttonsPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		try {
 			questions =DataBase.getQuestionAnsByTopic(topic);
-			queTextArea.setText(questions.get(count).getQuestion());
+			queTextArea.setText("Question "+ (count+1) + ": " + questions.get(count).getQuestion());
 			rdbtnOp1.setText(questions.get(count).getOp1());
 			rdbtnOp2.setText(questions.get(count).getOp2());
 			rdbtnOp3.setText(questions.get(count).getOp3());
@@ -150,7 +150,7 @@ public class Quiz extends JFrame{
 	
 //	Method to add and start the timer for the entire quiz
 	private void startTimer(int timeInSecs) {
-	    JLabel timerLabel = new JLabel(String.format("%02d:%02d", timeInSecs / 60, timeInSecs % 60));
+	    JLabel timerLabel = new JLabel("Timer: " + String.format("%02d:%02d", timeInSecs / 60, timeInSecs % 60));
 	    timerLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 	    timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    getContentPane().add(timerLabel, BorderLayout.EAST);
@@ -162,7 +162,7 @@ public class Quiz extends JFrame{
 	        public void actionPerformed(ActionEvent e) {
 	            if (timeLeft > 0) {
 	                timeLeft--;
-	                timerLabel.setText(String.format("%02d:%02d", timeLeft / 60, timeLeft % 60));
+	                timerLabel.setText("Timer: " + String.format("%02d:%02d", timeLeft / 60, timeLeft % 60));
 	            } else {
 	                ((Timer) e.getSource()).stop();
 	                displayScore();

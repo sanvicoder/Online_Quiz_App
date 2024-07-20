@@ -1,7 +1,7 @@
 package org.example;
 
 import javax.swing.JFrame;
-import java.awt.GridLayout;
+import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -33,17 +33,19 @@ public class Register {
 		frame.setBounds(100, 100, 598, 372);
 		frame.setTitle("User Registration");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(0, 2, 5, 5));
+		frame.getContentPane().setLayout(new GridLayout(0, 2, 10, 10));
 		
 		JLabel lblId = new JLabel("User ID:");
+//		lblId.setBounds(50, 79, 173, 36);
+		lblId.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblId);
 		
 		userIdField = new JTextField();
-		//userIdField.setBounds(50, 79, 173, 36);
 		frame.getContentPane().add(userIdField);
 		userIdField.setColumns(10);
 		
 		lblName = new JLabel("Name:");
+		lblName.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblName);
 		
 		nameField = new JTextField();
@@ -51,13 +53,15 @@ public class Register {
 		frame.getContentPane().add(nameField);
 		
 		lblemail = new JLabel("Email:");
+		lblemail.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblemail);
 		
 		emailField = new JTextField();
 		emailField.setColumns(10);
 		frame.getContentPane().add(emailField);
 		
-		lblPassword = new JLabel("Password");
+		lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Jua", Font.BOLD, 13));
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
@@ -76,12 +80,19 @@ public class Register {
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					//check all fields
+					if(userIdField.getText().isEmpty() || emailField.getText().isEmpty() || nameField.getText().isEmpty() ||
+							passwordField.getText().isEmpty())
+						throw new SQLException("All fields are mandatory");
 					DataBase.addUser(Integer.parseInt(userIdField.getText()), nameField.getText(), emailField.getText(), new String(passwordField.getPassword()));
 					JOptionPane.showMessageDialog(btnRegister, "User Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(btnRegister, "Can't Add User\n"+e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
+				}  catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(btnRegister, "Invalid User ID\nUser ID must be numeric\n"+e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
 				}
 			}
 		});

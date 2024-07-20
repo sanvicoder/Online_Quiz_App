@@ -309,26 +309,48 @@ public class DataBase {
 		}
 	}
 
-//	public static List<UserPanel.LeaderboardEntry> getLeaderboardTableModel(){
-//		List<UserPanel.LeaderboardEntry> leaderboard = new ArrayList<>();
-//		try {
-//			conn = ds.getConnection();
-//			PreparedStatement pstmt = conn.prepareStatement("SELECT u.username, SUM(qa.score) AS total_score\n" +
-//					"FROM users u\n" +
-//					"JOIN quiz_attempts qa ON u.userID = qa.userID\n" +
-//					"GROUP BY u.username\n" +
-//					"ORDER BY total_score DESC;");
-//			ResultSet rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				UserPanel.LeaderboardEntry entry = new UserPanel.LeaderboardEntry(rs.getString("username"), rs.getInt("total_score"));
-//				leaderboard.add(entry);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return leaderboard;
-//	}
-//
+	public static List<LeaderboardEntry> getOverallLeaderboard() {
+		String query = "SELECT u.username, SUM(qa.Score) AS total_score, COUNT(qa.AttemptID) AS num_attempts, AVG(qa.Score) AS average_score " +
+				"FROM quiz_attempts qa " +
+				"JOIN users u ON qa.userID = u.userID " +
+				"GROUP BY u.username " +
+				"ORDER BY total_score DESC";
+		return executeQuery(query);
+	}
+
+	public static List<LeaderboardEntry> getTopicLeaderboard(String topic) {
+		String query = "SELECT u.username, SUM(qa.Score) AS total_score, COUNT(qa.AttemptID) AS num_attempts, AVG(qa.Score) AS average_score " +
+				"FROM quiz_attempts qa " +
+				"JOIN users u ON qa.userID = u.userID " +
+				"WHERE qa.Topic = ? " +
+				"GROUP BY u.username " +
+				"ORDER BY total_score DESC";
+		return executeQuery(query, topic);
+	}
+
+	private static List<LeaderboardEntry> executeQuery(String query, Object... params) {
+		List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+		try (Connection conn = ds.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(query)) {
+			for (int i = 0; i < params.length; i++) {
+				pstmt.setObject(i + 1, params[i]);
+			}
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					LeaderboardEntry entry = new LeaderboardEntry();
+					entry.setUsername(rs.getString("username"));
+					entry.setTotalScore(rs.getInt("total_score"));
+					entry.setNumAttempts(rs.getInt("num_attempts"));
+					entry.setAverageScore(rs.getDouble("average_score"));
+					leaderboardEntries.add(entry);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return leaderboardEntries;
+	}
+
 	public static List<UserPanel.QuizAttempt> getAttemptsTableModel(int userId) {
 		List<UserPanel.QuizAttempt> attempts = new ArrayList<>();
 		try {

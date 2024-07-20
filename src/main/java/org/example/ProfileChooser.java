@@ -58,7 +58,7 @@ public class ProfileChooser {
 		
 		JLabel lblInstruction = new JLabel("Please Select Login profile:");
 		lblInstruction.setForeground(new Color(26, 95, 180));
-		lblInstruction.setBounds(113, 12, 218, 52);
+		lblInstruction.setBounds(135, 12, 218, 52);
 		frmQuizApplication.getContentPane().add(lblInstruction);
 		
 		JButton btnAdmin = new JButton("Admin");

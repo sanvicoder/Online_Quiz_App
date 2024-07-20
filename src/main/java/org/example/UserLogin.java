@@ -30,7 +30,7 @@ public class UserLogin {
 		frame.setVisible(true);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblId = new JLabel("ID:");
+		JLabel lblId = new JLabel("User ID:");
 		lblId.setBounds(50, 12, 173, 36);
 		frame.getContentPane().add(lblId);
 		
@@ -39,7 +39,7 @@ public class UserLogin {
 		frame.getContentPane().add(idField);
 		idField.setColumns(10);
 		
-		JLabel lblPassword = new JLabel("Password");
+		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setBounds(50, 79, 173, 36);
 		frame.getContentPane().add(lblPassword);
 		
