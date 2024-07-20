@@ -132,7 +132,7 @@ public class Quiz extends JFrame{
 
             if (button.isSelected() && button.getText().equals(questions.get(count).getAns())) {
 				JOptionPane.showMessageDialog(this,"Correct Answer" );
-            	score++;
+            	score=score+10;
             }else if(button.isSelected()){
 				JOptionPane.showMessageDialog(this,"Incorrect Answer" );
 				break;
